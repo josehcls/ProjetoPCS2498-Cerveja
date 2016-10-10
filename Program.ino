@@ -14,3 +14,22 @@ float getUmidadeAmbiente ()
   return dht.readHumidity();
 }
 
+void heatTilMashTemp() {
+		
+}
+
+void mashing() {
+	
+}
+
+void heatTilBoli() {
+	
+}
+
+void coolDown() {
+	
+}
+
+void finish() {
+	
+}
