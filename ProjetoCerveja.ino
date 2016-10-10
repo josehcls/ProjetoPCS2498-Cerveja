@@ -3,7 +3,11 @@ void printTemperaturesAndHumidity ();
 
 void loop()
 {
-  //printTemperaturesAndHumidity();
+  standBy();
   heatTilMashTemp();
-  delay(2000);
-}
+  mashing();
+  heatTilBoil();
+  coolDown();
+  addYeast();
+  finish();
+ }
