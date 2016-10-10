@@ -1,4 +1,8 @@
 
+// Tempo
+int time = 0;
+int current_time = 0;
+
 unsigned long timeNow = 0;
 unsigned long timeLast = 0;
 
@@ -27,7 +31,3 @@ int iceNeeded = liters;
 
 int switchState = 0;
 int switch1 = 0;
- 
-
-
-

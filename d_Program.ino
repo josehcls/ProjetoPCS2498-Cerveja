@@ -92,22 +92,21 @@ void heatTilMashTemp()
 
 // 2
 void mashing(){
-	int time = millis() / 1000; //tempo em segundos
-	bool done = false;
-	int current_time;
-	int stir = 1;
+	time = millis() / 1000; //tempo em segundos
+	bool done = false;	
+	int stir = 1;  
 
 	while(not done) {
-        if (immersionTemp < mashTemp - 2) {
-			heater1 = HIGH;
-		}
+    if (immersionTemp < mashTemp - 2) {
+		  heater1 = HIGH;
+    }
 
 		else if (immersionTemp > mashTemp + 2) {
 			heater1 = LOW;
 		}
         
-        current_time = millis()/1000;
-        if(current_time >= time+mashTime*60){
+    current_time = millis()/1000;
+    if(current_time >= time+mashTime*60) {
 			done = true;
 			ledPin = HIGH;
 			terminal.println("Brassagem acabou. Retire os grãos e deixe a tampa semi aberta. Aperte o botão quando o fizer.");
@@ -116,13 +115,14 @@ void mashing(){
 			lcd.setCursor(0,0);
 			lcd.print("Brassagem acabou");
 		}
-		else if (current_time >= time*n*600){
+		else if (current_time >= time*stir*600){
 			ledPin = HIGH;
 			terminal.println("Hora de mexer!");
 			terminal.flush();
 			lcd.clear();
 			lcd.setCursor(0,0);
 			lcd.print("Hora de mexer!");
+      stir++;
 		}
 		else if (ledPin == HIGH and) { // se o led estiver aceso e o usuario apertar o botao de que ja mexeu
 			ledPin = LOW;
@@ -137,51 +137,58 @@ void mashing(){
 
 // 3
 void heatTilBoil(){
-	lcd.setCursor(0,0);
-	lcd.print("3:AQUECENDO ");
-	lcd.print(boilTemp);
-	lcd.print("C");
-	lcd.setCursor(0,1);
-	lcd.print("00:00  TI:");
-	lcd.print(immersionTemp);
-	lcd.print("C");
+  while (1) 
+  {
+  	lcd.setCursor(0,0);
+    lcd.print("3:AQUECENDO ");
+    lcd.print(boilTemp);
+    lcd.print("C");
+    lcd.setCursor(0,1);
+    lcd.print("00:00  TI:");
+    lcd.print(immersionTemp);
+    lcd.print("C");
 
 
-	heater1 = HIGH;
-	heater2 = HIGH;
+    heater1 = HIGH;
+    heater2 = HIGH;
 
-	if (immersionTemp > boilTemp)
-	{      
-		heater1 = LOW;
-		heater2 = LOW;
-		terminal.println("Água aquecida.");
-		terminal.flush();
-		ledPin = HIGH;
+    if (immersionTemp > boilTemp)
+      {      
+        terminal.println("Água aquecida.");
+        terminal.flush();
+        ledPin = HIGH;
 
-		while (NOT_BOTAO); // ver quando recebe aperto de botao no app
+  	    while (NOT_BOTAO); // ver quando recebe aperto de botao no app
 		terminal.println("Iniciando estágio de fervura.");
 		terminal.flush();
 		ledPin = LOW;
 		return;            
-	}
-}
+    }
+  }
 
-void boil(){
-  
-  lcd.setCursor(0,0);
-  lcd.print("4:FERVENDO ");
-  lcd.print(boilTemp);
-  lcd.print("C");
-  lcd.setCursor(0,1);
-  lcd.print("00:00  TI:");
-  lcd.print(immersionTemp);
-  lcd.print("C");
+void boil()
+{  
+  time = millis() / 1000;
+  while()
+  {    
+    lcd.setCursor(0,0);
+    lcd.print("4:FERVENDO ");
+    lcd.print(boilTemp);
+    lcd.print("C");
+    lcd.setCursor(0,1);
+    lcd.print("00:00  TI:");
+    lcd.print(immersionTemp);
+    lcd.print("C");
 
-  heater1 = HIGH;
-  heater2 = HIGH;
-  
-  
-  
+    heater1 = HIGH;
+    heater2 = HIGH;
+    
+    current_time = millis()/1000;
+    if (current_time >= hopTime[hop])
+    {
+      
+    }
+  }
 }
 
 void coolDown(){

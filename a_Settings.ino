@@ -20,15 +20,13 @@ int yeastPitchTemperature = 24; // The ideal pitch temperature for your yeast, i
 int fermentationTemperatureMin = 20; // Minimum Temp that the yeast can thrive in, in celcius.  
 int fermentationTemperatureMax = 24; // Maximum Temp that the yeast can thrive in, in celcius.  
 
-int HopTime1 = 5;// after how many minutes of boiling the wort should this hop be added? 
-int HopTime2 = 10;
-int HopTime3 = 15;
-int HopTime4 = 20;
-
+// after how many minutes of boiling the wort should this hop be added? 
+// last value must be -1
+int HopTime[] = {5,10,15,20,-1};
 
 //Liters you will make
 
-int liters = 50; //The number of liters of boiled wort you are planning on having AFTER the boil.
+int liters =20; //The number of liters of boiled wort you are planning on having AFTER the boil.
 
 // Brew stages, Adjust this if you faced a power down, or reset at some point during the brew, otherwise leave at zero. 
 
