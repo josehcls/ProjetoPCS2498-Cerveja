@@ -28,3 +28,30 @@ void printTemperaturesAndHumidity ()
   lcd.print("%");
 }
 
+void standBy(){
+	
+}
+
+void heatTilMashTemp(){
+		
+}
+
+void mashing(){
+	
+}
+
+void heatTilBoil(){
+	
+}
+
+void coolDown(){
+	
+}
+
+void addYeast(){
+	
+}
+
+void finish(){
+	
+}
