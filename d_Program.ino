@@ -35,10 +35,12 @@ void printTemperaturesAndHumidity ()
   lcd.print("%");
 }
 
+// 0
 void standBy(){
 	
 }
 
+// 1
 void heatTilMashTemp()
 {
   while (1)
@@ -73,12 +75,50 @@ void heatTilMashTemp()
   }
 }
 
+// 2
 void mashing(){
 	
 }
 
+// 3
 void heatTilBoil(){
-	
+	lcd.setCursor(0,0);
+  lcd.print("3:AQUECENDO ");
+  lcd.print(boilTemp);
+  lcd.print("C");
+  lcd.setCursor(0,1);
+  lcd.print("00:00  TI:");
+  lcd.print(immersionTemp);
+  lcd.print("C");
+
+
+  heater1 = HIGH;
+  heater2 = HIGH;
+
+  if (immersionTemp > boilTemp)
+    {      
+      //terminal.println("Aquecendo a água para a Fervura.");
+      //terminal.flush();
+      return;            
+    }
+}
+
+void boil(){
+  
+  lcd.setCursor(0,0);
+  lcd.print("4:FERVENDO ");
+  lcd.print(boilTemp);
+  lcd.print("C");
+  lcd.setCursor(0,1);
+  lcd.print("00:00  TI:");
+  lcd.print(immersionTemp);
+  lcd.print("C");
+
+  heater1 = HIGH;
+  heater2 = HIGH;
+  
+  
+  
 }
 
 void coolDown(){
