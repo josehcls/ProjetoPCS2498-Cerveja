@@ -88,8 +88,6 @@ void heatTilMashTemp()
 
       return;            
     }
-  
-  
   }
 }
 
@@ -142,31 +140,33 @@ void mashing(){
 // 3
 void heatTilBoil(){
 	lcd.setCursor(0,0);
-  lcd.print("3:AQUECENDO ");
-  lcd.print(boilTemp);
-  lcd.print("C");
-  lcd.setCursor(0,1);
-  lcd.print("00:00  TI:");
-  lcd.print(immersionTemp);
-  lcd.print("C");
+	lcd.print("3:AQUECENDO ");
+	lcd.print(boilTemp);
+	lcd.print("C");
+	lcd.setCursor(0,1);
+	lcd.print("00:00  TI:");
+	lcd.print(immersionTemp);
+	lcd.print("C");
 
 
-  heater1 = HIGH;
-  heater2 = HIGH;
+	heater1 = HIGH;
+	heater2 = HIGH;
 
-  if (immersionTemp > boilTemp)
-    {      
-      terminal.println("Água aquecida.");
-      terminal.flush();
-      ledPin = HIGH;
+	if (immersionTemp > boilTemp)
+	{      
+		heater1 = LOW;
+		heater2 = LOW;
+		terminal.println("Água aquecida.");
+		terminal.flush();
+		ledPin = HIGH;
 
-	    while () { // ver quando recebe aperto de botao no app
-	    	terminal.println("Iniciando estágio de fervura.");
-	    	terminal.flush();
-	    	ledPin = LOW;
-	    }
-      return;            
-    }
+		while () { // ver quando recebe aperto de botao no app
+			terminal.println("Iniciando estágio de fervura.");
+			terminal.flush();
+			ledPin = LOW;
+		}
+		return;            
+	}
 }
 
 void boil(){
@@ -188,13 +188,43 @@ void boil(){
 }
 
 void coolDown(){
-	
+	while (1){
+		lcd.setCursor(0,0);
+		lcd.print("1:ESFRIANDO, T =");
+		lcd.setCursor(0,1);
+		lcd.print(immersionTemp);
+		lcd.print(" C");
+
+		updateTempAndHumidity();
+
+		if (immersionTemp < yeastPitchTemperature){
+			terminal.println("Água resfriada. Vá para o próximo estágio para receber instruções das próximas etapas.");
+			terminal.flush();
+			ledPin = HIGH;
+
+			while(){ // ver quando recebe aperto de botao no app
+				terminal.println("Iniciando estágio de fermentação");
+				terminal.flush();
+				ledPin = LOW;
+			}
+		return;            
+		}
+	}
 }
 
 void addYeast(){
-	
+	terminal.println("Transfira para novo recipiente, adicione a levedura, feche o recipiente e coloque em lugar escuro por 30 dias");
+	terminal.flush();
+	ledPin = HIGH;
+
+	while(){ // ver quando recebe aperto de botao no app
+		terminal.println("Iniciando estágio de finalização");
+		terminal.flush();
+		ledPin = LOW;
+	}
 }
 
 void finish(){
-	
+	terminal.println("Parabéns! Em 30 dias você terá uma deliciosa cerveja! Saúde!");
+	terminal.flush();
 }
