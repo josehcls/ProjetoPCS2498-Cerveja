@@ -76,8 +76,16 @@ void heatTilMashTemp()
       heater1 = LOW;
       heater2 = LOW;
 
-      //terminal.println("Água aquecida./nColoque o saco com os grãos e prenda-o com cuidado./nAjeite o termômetro novamente.\nQuando pronto, clique em continuar");
-      //terminal.flush();
+      terminal.println("Água aquecida./nColoque o saco com os grãos e prenda-o com cuidado./nAjeite o termômetro novamente.\nQuando pronto, clique em continuar");
+      terminal.flush();
+      ledPin = HIGH;
+
+	    while () { // ver quando recebe aperto de botao no app
+	    	terminal.println("Iniciando estágio de aquecimento de água");
+	    	terminal.flush();
+	    	ledPin = LOW;
+	    }
+
       return;            
     }
   
@@ -148,8 +156,15 @@ void heatTilBoil(){
 
   if (immersionTemp > boilTemp)
     {      
-      //terminal.println("Aquecendo a água para a Fervura.");
-      //terminal.flush();
+      terminal.println("Água aquecida.");
+      terminal.flush();
+      ledPin = HIGH;
+
+	    while () { // ver quando recebe aperto de botao no app
+	    	terminal.println("Iniciando estágio de fervura.");
+	    	terminal.flush();
+	    	ledPin = LOW;
+	    }
       return;            
     }
 }
