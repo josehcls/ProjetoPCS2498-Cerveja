@@ -1,3 +1,6 @@
+void heatTilMashTemp();
+void printTemperaturesAndHumidity ();
+
 void loop()
 {
   standBy();
