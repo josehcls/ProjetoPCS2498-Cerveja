@@ -43,11 +43,10 @@ void standBy(){
     lcd.print("Inicie no app!");
     ledPin = HIGH;
 
-    while () { // ver quando recebe aperto de botao no app
-    	terminal.println("Iniciando estágio de aquecimento de água");
-    	terminal.flush();
-    	ledPin = LOW;
-    }
+    while (NOT_BOTAO); // ver quando recebe aperto de botao no app
+	terminal.println("Iniciando estágio de aquecimento de água");
+	terminal.flush();
+	ledPin = LOW;
 }
 
 // 1
@@ -80,11 +79,11 @@ void heatTilMashTemp()
       terminal.flush();
       ledPin = HIGH;
 
-	    while () { // ver quando recebe aperto de botao no app
-	    	terminal.println("Iniciando estágio de aquecimento de água");
-	    	terminal.flush();
-	    	ledPin = LOW;
-	    }
+	    while (NOT_BOTAO); // ver quando recebe aperto de botao no app
+	    	
+    	terminal.println("Iniciando estágio de aquecimento de água");
+	   	terminal.flush();
+	   	ledPin = LOW;
 
       return;            
     }
@@ -130,11 +129,10 @@ void mashing(){
 		}
 	}
 
-	while () { // ver quando recebe aperto de botao no app
-    	terminal.println("Iniciando estágio de aquecimento de água");
-    	terminal.flush();
-    	ledPin = LOW;
-    }
+	while (NOT_BOTAO); // ver quando recebe aperto de botao no app
+	terminal.println("Iniciando estágio de aquecimento de água");
+	terminal.flush();
+	ledPin = LOW;
 }
 
 // 3
@@ -160,11 +158,10 @@ void heatTilBoil(){
 		terminal.flush();
 		ledPin = HIGH;
 
-		while () { // ver quando recebe aperto de botao no app
-			terminal.println("Iniciando estágio de fervura.");
-			terminal.flush();
-			ledPin = LOW;
-		}
+		while (NOT_BOTAO); // ver quando recebe aperto de botao no app
+		terminal.println("Iniciando estágio de fervura.");
+		terminal.flush();
+		ledPin = LOW;
 		return;            
 	}
 }
@@ -202,11 +199,10 @@ void coolDown(){
 			terminal.flush();
 			ledPin = HIGH;
 
-			while(){ // ver quando recebe aperto de botao no app
-				terminal.println("Iniciando estágio de fermentação");
-				terminal.flush();
-				ledPin = LOW;
-			}
+			while(NOT_BOTAO); // ver quando recebe aperto de botao no app
+			terminal.println("Iniciando estágio de fermentação");
+			terminal.flush();
+			ledPin = LOW;
 		return;            
 		}
 	}
@@ -217,11 +213,10 @@ void addYeast(){
 	terminal.flush();
 	ledPin = HIGH;
 
-	while(){ // ver quando recebe aperto de botao no app
-		terminal.println("Iniciando estágio de finalização");
-		terminal.flush();
-		ledPin = LOW;
-	}
+	while(NOT_BOTAO); // ver quando recebe aperto de botao no app
+	terminal.println("Iniciando estágio de finalização");
+	terminal.flush();
+	ledPin = LOW;
 }
 
 void finish(){
