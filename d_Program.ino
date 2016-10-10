@@ -14,7 +14,7 @@ float getLocalHumidity ()
   return dht.readHumidity();
 }
 
-void printTemperaturesAndUmidity (float imersionTemp, float localTemp, float localHumidity)
+void printTemperaturesAndHumidity ()
 {
   lcd.setCursor(0,0);
   lcd.print("I:");

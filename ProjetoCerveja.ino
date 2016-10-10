@@ -1,4 +1,7 @@
+#include <d_Program.ino>
+
 void loop()
 {
-  // put your main code here, to run repeatedly:
+  printTemperaturesAndHumidity();
+  delay(2000);
 }
