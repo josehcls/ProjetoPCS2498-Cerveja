@@ -30,6 +30,8 @@ void setup()
   sensors.begin();
   dht.begin();
 
+  time = millis() / 1000; //tempo em segundos
+
   delay(1000);
 }
 
