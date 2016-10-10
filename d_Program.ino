@@ -19,10 +19,12 @@ void standBy(){
 	lcd.print("Estou pronta!");
 	lcd.setCursor(0,1);
     lcd.print("Inicie no app!");
+    ledPin = HIGH;
 
-    if () { // ver quando recebe aperto de botao no app
+    while () { // ver quando recebe aperto de botao no app
     	terminal.println("Iniciando estágio de aquecimento de água");
     	terminal.flush();
+    	ledPin = LOW;
     }
 }
 
@@ -31,30 +33,48 @@ void heatTilMashTemp(){
 }
 
 void mashing(){
-	lcd.setCursor(0,0);
-	lcd.print("Agua quente, ver");
-	lcd.setCursor(0,1);
-    lcd.print("inst. no app");
+	int time = millis() / 1000; //tempo em segundos
+	bool done = false;
+	int current_time;
+	int stir = 1;
 
-	if ( immersionTemp < mashTemp - 2) {
-		heater1 = HIGH;
+	while(not done) {
+        if (immersionTemp < mashTemp - 2) {
+			heater1 = HIGH;
+		}
+
+		else if (immersionTemp > mashTemp + 2) {
+			heater1 = LOW;
+		}
+        
+        current_time = millis()/1000;
+        if(current_time >= time+mashTime*60){
+			done = true;
+			ledPin = HIGH;
+			terminal.println("Brassagem acabou. Retire os grãos e deixe a tampa semi aberta. Aperte o botão quando o fizer.");
+			terminal.flush();
+			lcd.clear();
+			lcd.setCursor(0,0);
+			lcd.print("Brassagem acabou");
+		}
+		else if (current_time >= time*n*600){
+			ledPin = HIGH;
+			terminal.println("Hora de mexer!");
+			terminal.flush();
+			lcd.clear();
+			lcd.setCursor(0,0);
+			lcd.print("Hora de mexer!");
+		}
+		else if (ledPin == HIGH and) { // se o led estiver aceso e o usuario apertar o botao de que ja mexeu
+			ledPin = LOW;
+		}
 	}
 
-	else if ( immersionTemp > mashTemp + 2 ) {
-		heater1 = LOW;
-	}
-
-	if (brewStage == 2 && switchState == HIGH) {
-		brewStage = 3;
-		terminal.println("THE MASH STARTS NOW. STIR EVERY FEW MINUTES TO ENSURE EVEN TEMPERATURE DISTRIBUTION. MAKE SURE NO GRAINS ARE CLOGGED TOGETHER ");
-
-		terminal.flush();
-		minutesCounter = 0;
-		//timeEstimate = 0;
-
-		buzzer = HIGH;
-		buzzer = LOW;
-	}
+	while () { // ver quando recebe aperto de botao no app
+    	terminal.println("Iniciando estágio de aquecimento de água");
+    	terminal.flush();
+    	ledPin = LOW;
+    }
 }
 
 void heatTilBoil(){
