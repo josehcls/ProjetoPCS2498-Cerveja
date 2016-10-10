@@ -1,7 +1,9 @@
-#include <d_Program.ino>
+void heatTilMashTemp();
+void printTemperaturesAndHumidity ();
 
 void loop()
 {
-  printTemperaturesAndHumidity();
+  //printTemperaturesAndHumidity();
+  heatTilMashTemp();
   delay(2000);
 }
