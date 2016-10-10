@@ -1,15 +1,15 @@
-float getTemperaturaImersao ()
+float getImersionTemp ()
 {
   sensors.requestTemperatures();
   return lcd.print(sensors.getTempCByIndex(0));
 }
 
-float getTemperaturaAmbiente ()
+float getLocalTemp ()
 {
   return lcd.print(dht.readTemperature());
 }
 
-float getUmidadeAmbiente ()
+float getLocalUmidity ()
 {
   return dht.readHumidity();
 }
