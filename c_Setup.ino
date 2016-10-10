@@ -25,7 +25,7 @@ DHT dht(DHTPIN, DHTTYPE);
 
 void setup()
 {
-  serial.begin(9600);
+  //serial.begin(9600);
   lcd.begin (16,2);
   sensors.begin();
   dht.begin();
