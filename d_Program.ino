@@ -14,22 +14,30 @@ float getLocalUmidity ()
   return dht.readHumidity();
 }
 
-void heatTilMashTemp() {
+void standBy(){
+	
+}
+
+void heatTilMashTemp(){
 		
 }
 
-void mashing() {
+void mashing(){
 	
 }
 
-void heatTilBoli() {
+void heatTilBoil(){
 	
 }
 
-void coolDown() {
+void coolDown(){
 	
 }
 
-void finish() {
+void addYeast(){
+	
+}
+
+void finish(){
 	
 }
