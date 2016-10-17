@@ -1,16 +1,18 @@
 // 
 
+char auth[] = "d839d81fcfab4cc5ac4496279be3abd2";
+
 //How many KiloWatt are your heating elements combined?
 
 int KiloWatt = 2;
 
 //Temperature and times in recipe:
 
-int mashTemp = 65; // Temp in celcius
-int boilTemp = 99; // Temp in celcius, set to max 99
+float mashTemp = 28.0; // Temp in celcius
+float boilTemp = 30.0; // Temp in celcius, set to max 99
 
-int mashTime = 60; // number of minutes you are going to mash
-int boilTime = 60; // number of minutes you are going to boil
+int mashTime = 2; // number of minutes you are going to mash
+int boilTime = 3; // number of minutes you are going to boil
 int fermentTimeprimary = 23; // Number of days you are going to ferment
 int fermentTimeSecondary = 22; // Number of days you are going to ferment in secondary, set to zero if you do not plan on using secondary fermenting, this is often not required. 
 
@@ -22,11 +24,11 @@ int fermentationTemperatureMax = 24; // Maximum Temp that the yeast can thrive i
 
 // after how many minutes of boiling the wort should this hop be added? 
 // last value must be -1
-int HopTime[] = {5,10,15,20,-1};
+int hopTime[5] = {1,2,3,-1};
 
 //Liters you will make
 
-int liters =20; //The number of liters of boiled wort you are planning on having AFTER the boil.
+int liters = 20; //The number of liters of boiled wort you are planning on having AFTER the boil.
 
 // Brew stages, Adjust this if you faced a power down, or reset at some point during the brew, otherwise leave at zero. 
 

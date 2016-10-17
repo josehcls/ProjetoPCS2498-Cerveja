@@ -1,12 +1,32 @@
+ //Para o botão de Próximo
+BLYNK_WRITE(V27)
+{
+  if (param.asInt())
+  {
+    lastnext = next;  //Atualiza next
+    next = 1;
+  }
+  else
+  {
+    lastnext = next;  //Atualiza next
+    next = 0;
+  }
+
+  if ((lastnext == 0)and(next == 1))  //
+  {
+    NOT_BOTAO = false;
+  } 
+}
+
 float getImmersionTemp ()
 {
   sensors.requestTemperatures();
-  return lcd.print(sensors.getTempCByIndex(0));
+  return sensors.getTempCByIndex(0);
 }
 
 float getLocalTemp ()
 {
-  return lcd.print(dht.readTemperature());
+  return dht.readTemperature();
 }
 
 float getLocalHumidity ()
@@ -37,16 +57,20 @@ void printTemperaturesAndHumidity ()
 
 // 0
 void standBy(){
-	lcd.setCursor(0,0);
-	lcd.print("Estou pronta!");
-	lcd.setCursor(0,1);
+  lcd.setCursor(0,0);
+  lcd.print("Estou pronta!");
+  lcd.setCursor(0,1);
     lcd.print("Inicie no app!");
-    ledPin = HIGH;
+    digitalWrite(LEDPIN,HIGH);
 
-    while (NOT_BOTAO); // ver quando recebe aperto de botao no app
-	terminal.println("Iniciando estágio de aquecimento de água");
-	terminal.flush();
-	ledPin = LOW;
+ // ver quando recebe aperto de botao no app
+  if(!NOT_BOTAO){
+    terminal.println("Iniciando estágio de aquecimento de água");
+    terminal.flush();
+    digitalWrite(LEDPIN,LOW);
+    estado += 1;
+    NOT_BOTAO = true;
+  }
 }
 
 // 1
@@ -54,14 +78,16 @@ void heatTilMashTemp()
 {
   while (1)
   {
+    NOT_BOTAO = true;
+    
     lcd.setCursor(0,0);
     lcd.print("1:AQUECENDO ");
     lcd.print(mashTemp);
     lcd.print("C");
     lcd.setCursor(0,1);
-    lcd.print("00:00  TI:");
+    //lcd.print("00:00  TI:");
     lcd.print(immersionTemp);
-    lcd.print("C");
+    //lcd.print("C");
   
     // Ativa Aquecedores
     heater1 = HIGH;
@@ -77,13 +103,18 @@ void heatTilMashTemp()
 
       terminal.println("Água aquecida./nColoque o saco com os grãos e prenda-o com cuidado./nAjeite o termômetro novamente.\nQuando pronto, clique em continuar");
       terminal.flush();
-      ledPin = HIGH;
+      digitalWrite(LEDPIN,HIGH);
 
-	    while (NOT_BOTAO); // ver quando recebe aperto de botao no app
-	    	
-    	terminal.println("Iniciando estágio de aquecimento de água");
-	   	terminal.flush();
-	   	ledPin = LOW;
+      while (NOT_BOTAO) {
+        delay(1000); 
+        Blynk.run();
+        lcd.setCursor(0,1);
+        lcd.print(immersionTemp);
+        } // ver quando recebe aperto de botao no app
+        
+      terminal.println("Iniciando estágio de aquecimento de água");
+      terminal.flush();
+      digitalWrite(LEDPIN,LOW);
 
       return;            
     }
@@ -92,54 +123,55 @@ void heatTilMashTemp()
 
 // 2
 void mashing(){
-	time = millis() / 1000; //tempo em segundos
-	bool done = false;	
-	int stir = 1;  
+  time = millis() / 1000; //tempo em segundos
+  bool done = false;  
+  int stir = 1;  
 
-	while(not done) {
+  while(not done) {
+    Blynk.run();
     if (immersionTemp < mashTemp - 2) {
-		  heater1 = HIGH;
+      heater1 = HIGH;
     }
 
-		else if (immersionTemp > mashTemp + 2) {
-			heater1 = LOW;
-		}
+    else if (immersionTemp > mashTemp + 2) {
+      heater1 = LOW;
+    }
         
     current_time = millis()/1000;
     if(current_time >= time+mashTime*60) {
-			done = true;
-			ledPin = HIGH;
-			terminal.println("Brassagem acabou. Retire os grãos e deixe a tampa semi aberta. Aperte o botão quando o fizer.");
-			terminal.flush();
-			lcd.clear();
-			lcd.setCursor(0,0);
-			lcd.print("Brassagem acabou");
-		}
-		else if (current_time >= time*stir*600){
-			ledPin = HIGH;
-			terminal.println("Hora de mexer!");
-			terminal.flush();
-			lcd.clear();
-			lcd.setCursor(0,0);
-			lcd.print("Hora de mexer!");
+      done = true;
+      digitalWrite(LEDPIN,HIGH);
+      terminal.println("Brassagem acabou. Retire os grãos e deixe a tampa semi aberta. Aperte o botão quando o fizer.");
+      terminal.flush();
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Brassagem acabou");
+    }
+    else if (current_time >= time*stir*600){
+      digitalWrite(LEDPIN,HIGH);
+      terminal.println("Hora de mexer!");
+      terminal.flush();
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Hora de mexer!");
       stir++;
-		}
-		else if (ledPin == HIGH and) { // se o led estiver aceso e o usuario apertar o botao de que ja mexeu
-			ledPin = LOW;
-		}
-	}
+    }
+    else if (NOT_BOTAO) { // se o led estiver aceso e o usuario apertar o botao de que ja mexeu
+      digitalWrite(LEDPIN,LOW);
+    }
+  }
 
-	while (NOT_BOTAO); // ver quando recebe aperto de botao no app
-	terminal.println("Iniciando estágio de aquecimento de água");
-	terminal.flush();
-	ledPin = LOW;
+  while (NOT_BOTAO); // ver quando recebe aperto de botao no app
+  terminal.println("Iniciando estágio de aquecimento de água");
+  terminal.flush();
+  digitalWrite(LEDPIN,LOW);
 }
 
 // 3
 void heatTilBoil(){
   while (1) 
   {
-  	lcd.setCursor(0,0);
+    lcd.setCursor(0,0);
     lcd.print("3:AQUECENDO ");
     lcd.print(boilTemp);
     lcd.print("C");
@@ -156,20 +188,21 @@ void heatTilBoil(){
       {      
         terminal.println("Água aquecida.");
         terminal.flush();
-        ledPin = HIGH;
+        digitalWrite(LEDPIN,HIGH);
 
-  	    while (NOT_BOTAO); // ver quando recebe aperto de botao no app
-		terminal.println("Iniciando estágio de fervura.");
-		terminal.flush();
-		ledPin = LOW;
-		return;            
+        while (NOT_BOTAO); // ver quando recebe aperto de botao no app
+        terminal.println("Iniciando estágio de fervura.");
+        terminal.flush();
+        digitalWrite(LEDPIN,LOW);
+        return;            
     }
   }
+}
 
 void boil()
 {  
   time = millis() / 1000;
-  while()
+  while(1)
   {    
     lcd.setCursor(0,0);
     lcd.print("4:FERVENDO ");
@@ -184,49 +217,57 @@ void boil()
     heater2 = HIGH;
     
     current_time = millis()/1000;
-    if (current_time >= hopTime[hop])
+    if (current_time >= hopTime[hop] && hopTime[hop] != -1)
     {
-      
+        terminal.println("ADD HOP " + String(hop));
+        terminal.flush();
+        hop++;  
+    }
+    else if (current_time >= boilTime && hopTime[hop] == -1)
+    {
+        heater1 = HIGH;
+        heater2 = HIGH;
+        return;
     }
   }
 }
 
 void coolDown(){
-	while (1){
-		lcd.setCursor(0,0);
-		lcd.print("1:ESFRIANDO, T =");
-		lcd.setCursor(0,1);
-		lcd.print(immersionTemp);
-		lcd.print(" C");
+  while (1){
+    lcd.setCursor(0,0);
+    lcd.print("1:ESFRIANDO, T =");
+    lcd.setCursor(0,1);
+    lcd.print(immersionTemp);
+    lcd.print(" C");
 
-		updateTempAndHumidity();
+    updateTempAndHumidity();
 
-		if (immersionTemp < yeastPitchTemperature){
-			terminal.println("Água resfriada. Vá para o próximo estágio para receber instruções das próximas etapas.");
-			terminal.flush();
-			ledPin = HIGH;
+    if (immersionTemp < yeastPitchTemperature){
+      terminal.println("Água resfriada. Vá para o próximo estágio para receber instruções das próximas etapas.");
+      terminal.flush();
+      digitalWrite(LEDPIN,HIGH);
 
-			while(NOT_BOTAO); // ver quando recebe aperto de botao no app
-			terminal.println("Iniciando estágio de fermentação");
-			terminal.flush();
-			ledPin = LOW;
-		return;            
-		}
-	}
+      while(NOT_BOTAO); // ver quando recebe aperto de botao no app
+      terminal.println("Iniciando estágio de fermentação");
+      terminal.flush();
+      digitalWrite(LEDPIN,LOW);
+    return;            
+    }
+  }
 }
 
 void addYeast(){
-	terminal.println("Transfira para novo recipiente, adicione a levedura, feche o recipiente e coloque em lugar escuro por 30 dias");
-	terminal.flush();
-	ledPin = HIGH;
+  terminal.println("Transfira para novo recipiente, adicione a levedura, feche o recipiente e coloque em lugar escuro por 30 dias");
+  terminal.flush();
+  digitalWrite(LEDPIN,HIGH);
 
-	while(NOT_BOTAO); // ver quando recebe aperto de botao no app
-	terminal.println("Iniciando estágio de finalização");
-	terminal.flush();
-	ledPin = LOW;
+  while(NOT_BOTAO); // ver quando recebe aperto de botao no app
+  terminal.println("Iniciando estágio de finalização");
+  terminal.flush();
+  digitalWrite(LEDPIN,LOW);
 }
 
 void finish(){
-	terminal.println("Parabéns! Em 30 dias você terá uma deliciosa cerveja! Saúde!");
-	terminal.flush();
+  terminal.println("Parabéns! Em 30 dias você terá uma deliciosa cerveja! Saúde!");
+  terminal.flush();
 }

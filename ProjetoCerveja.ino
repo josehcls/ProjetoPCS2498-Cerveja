@@ -1,3 +1,5 @@
+#include <BlynkSimpleStream.h>
+
 void standBy();
 void heatTilMashTemp();
 void mashing();
@@ -8,13 +10,35 @@ void finish();
 
 void printTemperaturesAndHumidity ();
 
+
 void loop()
 {
-  standBy();
-  heatTilMashTemp();
-  mashing();
-  heatTilBoil();
-  coolDown();
-  addYeast();
-  finish();
+  Blynk.run();
+  switch (estado) {
+      case 0:
+        standBy();
+        break;
+      case 1:
+      	heatTilMashTemp();
+        break;      
+      case 2:
+      mashing();
+        break;      
+
+      case 3:
+      heatTilBoil();
+        break;      
+
+      case 4:
+      coolDown();
+        break;      
+
+      case 5:
+      addYeast();
+        break;      
+        
+      case 6:
+        finish();
+        break;
+  }
  }

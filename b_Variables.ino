@@ -31,3 +31,9 @@ int iceNeeded = liters;
 
 int switchState = 0;
 int switch1 = 0;
+
+int lastnext = 0;
+int next = 0;
+bool NOT_BOTAO = true;
+
+int estado = 0;
