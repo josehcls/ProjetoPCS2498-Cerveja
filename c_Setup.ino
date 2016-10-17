@@ -38,15 +38,15 @@ WidgetTerminal terminal(V0);
 void setup()
 {
  // Blynk will work through Serial
-  Serial.begin(9600);
-  Blynk.begin(auth, Serial);
-  
-  lcd.begin (16,2);
-  sensors.begin();
-  dht.begin();
-  pinMode(LEDPIN, OUTPUT);  
-  
-  time = millis() / 1000; //tempo em segundos
+    Serial.begin(9600);
+    Blynk.begin(auth, Serial);
+    
+    lcd.begin (16,2);
+    sensors.begin();
+    dht.begin();
+    pinMode(LEDPIN, OUTPUT);    
+    
+    time = millis() / 1000; //tempo em segundos
 
-  delay(1000);
+    delay(1000);
 }

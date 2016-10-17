@@ -4,6 +4,7 @@ void standBy();
 void heatTilMashTemp();
 void mashing();
 void heatTilBoil();
+void boil();
 void coolDown();
 void addYeast();
 void finish();
@@ -13,32 +14,38 @@ void printTemperaturesAndHumidity ();
 
 void loop()
 {
-  Blynk.run();
-  switch (estado) {
-      case 0:
-        standBy();
-        break;
-      case 1:
-      	heatTilMashTemp();
-        break;      
-      case 2:
-      mashing();
-        break;      
+    Blynk.run();
+    switch (estado) {
+            case STANDY_BY:
+                standBy();
+                break;
+                
+            case HEAT_TILL_MASH:
+              	heatTilMashTemp();
+                break; 
+                         
+            case MASHING:
+                mashing();
+                break;            
 
-      case 3:
-      heatTilBoil();
-        break;      
+            case HEAT_TILL_BOIL:
+                heatTilBoil();
+                break;            
 
-      case 4:
-      coolDown();
-        break;      
+            case BOILING:
+                boil();
+                break;
 
-      case 5:
-      addYeast();
-        break;      
-        
-      case 6:
-        finish();
-        break;
-  }
+            case COOLDOWN:
+                coolDown();
+                break;            
+
+            case PITCH_YEAST:
+                addYeast();
+                break;            
+                
+            case FINISH:
+                finish();
+                break;
+    }
  }
