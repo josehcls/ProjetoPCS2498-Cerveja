@@ -15,6 +15,12 @@
 // Led
 #define LEDPIN 6
 
+// Led
+#define LEDPIN 6
+
+// Botão
+#define NOT_BOTAO false
+
 // Configutando uma instancia do OneWire para comunicacao com o 18b20s
 OneWire oneWire(ONE_WIRE_BUS);
 
@@ -28,7 +34,6 @@ LiquidCrystal_I2C lcd(0x3F,2,1,0,4,5,6,7,3, POSITIVE);
 DHT dht(DHTPIN, DHTTYPE);
 
 WidgetTerminal terminal(V0);
-
 
 void setup()
 {
