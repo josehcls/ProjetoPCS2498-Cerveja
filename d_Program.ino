@@ -55,7 +55,7 @@ String getElapsedTime (int secondsReference)
 String getRemainingTime (int secondsReference, int totalTime)
 {
     currentTime = millis() / 1000;
-    int elapsedTime = current - secondsReference
+    int elapsedTime = currentTime - secondsReference;
 
     if (elapsedTime < 0) elapsedTime = 0;
 
@@ -110,16 +110,34 @@ void heatTilMashTemp()
 
     updateTempAndHumidity();
 
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("1:AQUECENDO ");
-    lcd.print(mashTemp);
-    lcd.print("C");
-    lcd.setCursor(0,1);
-    lcd.print(getElapsedTime(time));
-    lcd.print("  ");
-    lcd.print(immersionTemp);
-    lcd.print("C");
+    if (subStage == 2)
+    {
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("AQUECIMENTO OK!"); 
+        lcd.setCursor(0,1);
+        lcd.print(getElapsedTime(time));
+        lcd.print("  ");
+        lcd.print(immersionTemp);
+        lcd.print("C");
+        delay(1000);
+        lcd.setCursor(0,0);
+        lcd.print("APERTE O BOTÃO");
+    }
+    else
+    {
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("1:AQUECENDO ");
+        lcd.print(mashTemp);
+        lcd.print("C");
+        lcd.setCursor(0,1);
+        lcd.print(getElapsedTime(time));
+        lcd.print("  ");
+        lcd.print(immersionTemp);
+        lcd.print("C");
+    
+    }
     
     if (immersionTemp < mashTemp - 2)
     {
@@ -137,23 +155,15 @@ void heatTilMashTemp()
         if (subStage == 1)
         {
             terminal.println("Água aquecida.");
-            terminal.println("Coloque o saco com os grãos e prenda-o com cuidado.")
+            terminal.println("Coloque o saco com os grãos e prenda-o com cuidado.");
             terminal.println("Ajeite o termômetro novamente");
-            terminar.println("Quando pronto, clique em continuar");
+            terminal.println("Quando pronto, clique em continuar");
             terminal.flush();
             subStage = 2;
         }
 
         digitalWrite(LEDPIN,HIGH);
 
-        lcd.clear();
-        lcd.setCursor(0,0);
-        lcd.print("AQUECIMENTO OK!"); 
-        lcd.setCursor(0,1);
-        lcd.print(getElapsedTime(time));
-        lcd.print("  ");
-        lcd.print(immersionTemp);
-        lcd.print("C");
 
         if (goButton)
         {         
@@ -169,21 +179,37 @@ void mashing(){
     if (subStage == 0)
     {
         time = millis() / 1000; //tempo em segundos
-        int stir = 1;
+        stir = 1;
         subStage = 1;    
     }
 
         lcd.clear();
         if (subStage == 2)
-        lcd.setCursor(0,0);
-        lcd.print("2:BRASSAGEM "); 
-        lcd.print(mashTemp);
-        lcd.print("C");
-        lcd.setCursor(0,1);
-        lcd.print(getRemainingTime(time, mashTime));
-        lcd.print("  ");
-        lcd.print(immersionTemp);
-        lcd.print("C");
+        {
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("BRASSAGEM OK");
+            lcd.setCursor(0,1);
+            lcd.print(getRemainingTime(time, mashTime));
+            lcd.print("  ");
+            lcd.print(immersionTemp);
+            lcd.print("C");
+            delay(1000);
+            lcd.setCursor(0,0);
+            lcd.print("APERTE O BOTÃO");
+        }
+        else
+        {          
+            lcd.setCursor(0,0);
+            lcd.print("2:BRASSAGEM "); 
+            lcd.print(mashTemp);
+            lcd.print("C");
+            lcd.setCursor(0,1);
+            lcd.print(getRemainingTime(time, mashTime));
+            lcd.print("  ");
+            lcd.print(immersionTemp);
+            lcd.print("C");
+        }
 
 
     if (immersionTemp < mashTemp - 2) {
@@ -201,21 +227,12 @@ void mashing(){
         digitalWrite(LEDPIN,HIGH);
         if (subStage == 1)
         {
-            terminal.println("Brassagem acabou. Retire os grãos e deixe a tampa semi aberta.");
+            terminal.println("Brassagem acabou. Retire os grãos com cuidado e deixe a tampa semi aberta.");
+            terminal.println("Ajeite novamente o termômetro.");
             terminal.println("Aperte o botão quando o fizer.");
             terminal.flush();  
-            subStage = 2
+            subStage = 2;
         }
-
-        lcd.clear();
-        lcd.setCursor(0,0);
-        lcd.print("BRASSAGEM OK");
-        lcd.setCursor(0,1);
-        lcd.print(getRemainingTime(time, mashTime));
-        lcd.print("  ");
-        lcd.print(immersionTemp);
-        lcd.print("C");
-
     }
     else if (currentTime >= time*stir*600)
     {
@@ -243,12 +260,16 @@ void mashing(){
 
 // 3
 void heatTilBoil(){
-    while (1) 
-    {
+        if (subStage == 0)
+        {
+            time = millis() / 1000; //tempo em segundos
+            subStage = 1;    
+        }
+
         lcd.clear();
         lcd.setCursor(0,0);
-        lcd.print("1:AQUECENDO ");
-        lcd.print(mashTemp);
+        lcd.print("3:AQUECENDO ");
+        lcd.print(boilTemp);
         lcd.print("C");
         lcd.setCursor(0,1);
         lcd.print(getElapsedTime(time));
@@ -256,55 +277,64 @@ void heatTilBoil(){
         lcd.print(immersionTemp);
         lcd.print("C");
 
-
         heater1 = HIGH;
         heater2 = HIGH;
 
         if (immersionTemp > boilTemp)
-            {            
-                terminal.println("Água aquecida.");
-                terminal.flush();
-                digitalWrite(LEDPIN,HIGH);
+            {
+                if (subStage == 1)
+                {
+                    terminal.println("Água aquecida.");
+                    terminal.flush();
+                    digitalWrite(LEDPIN,HIGH);
+                    subStage = 2;
+                }
 
-                while (NOT_BOTAO); // ver quando recebe aperto de botao no app
-                terminal.println("Iniciando estágio de fervura.");
-                terminal.flush();
-                digitalWrite(LEDPIN,LOW);
-                return;                        
+                if (goButton && subStage == 2)
+                {
+                    terminal.println("Iniciando estágio de fervura.");
+                    terminal.flush();
+                    digitalWrite(LEDPIN,LOW);
+                    stage = BOILING;
+                    subStage = 0;                  
+                }
         }
-    }
 }
 
 void boil()
-{    
-    time = millis() / 1000;
-    while(1)
-    {        
-        lcd.setCursor(0,0);
-        lcd.print("4:FERVENDO ");
-        lcd.print(boilTemp);
-        lcd.print("C");
-        lcd.setCursor(0,1);
-        lcd.print("00:00    TI:");
-        lcd.print(immersionTemp);
-        lcd.print("C");
+{   
+    if (subStage == 0)
+    {
+        time = millis() / 1000;
+        subStage = 1;
+    } 
 
-        heater1 = HIGH;
-        heater2 = HIGH;
-        
-        currentTime = millis()/1000;
-        if (currentTime >= hopTime[hop] && hopTime[hop] != -1)
-        {
-                terminal.println("ADD HOP " + String(hop));
-                terminal.flush();
-                hop++;    
-        }
-        else if (currentTime >= boilTime && hopTime[hop] == -1)
-        {
-                heater1 = HIGH;
-                heater2 = HIGH;
-                return;
-        }
+    lcd.setCursor(0,0);
+    lcd.print("4:FERVENDO ");
+    lcd.print(boilTemp);
+    lcd.print("C");
+    lcd.setCursor(0,1);
+    lcd.print(getRemainingTime(time, boilTime));
+    lcd.print("  ");
+    lcd.print(immersionTemp);
+    lcd.print("C");
+
+    heater1 = HIGH;
+    heater2 = HIGH;
+    
+    currentTime = millis()/1000;
+
+    if (currentTime >= hopTime[hop] && hopTime[hop] != -1)
+    {
+            terminal.println("ADD HOP " + String(hop));
+            terminal.flush();
+            hop++;    
+    }
+    else if (currentTime >= boilTime && hopTime[hop] == -1)
+    {
+            heater1 = HIGH;
+            heater2 = HIGH;
+            return;
     }
 }
 

@@ -48,5 +48,8 @@ void setup()
     
     time = millis() / 1000; //tempo em segundos
 
+    stage = 0;
+    subStage = 0;
+    
     delay(1000);
 }

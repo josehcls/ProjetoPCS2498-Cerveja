@@ -9,13 +9,23 @@ void coolDown();
 void addYeast();
 void finish();
 
-void printTemperaturesAndHumidity ();
-
+// Estados
+int stage;
+#define STANDY_BY 0
+#define HEAT_TILL_MASH 1
+#define MASHING 2
+#define HEAT_TILL_BOIL 3
+#define BOILING  4
+#define COOLDOWN 5
+#define PITCH_YEAST 6
+#define FINISH 7
+int subStage;
 
 void loop()
 {
     Blynk.run();
-    switch (estado) {
+    switch (stage) 
+    {
             case STANDY_BY:
                 standBy();
                 break;
